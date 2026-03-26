@@ -1,0 +1,10 @@
+                        precision    recall  f1-score   support
+
+ Bacterial Leaf Blight       0.93      0.87      0.90        30
+               Healthy       1.00      1.00      1.00        30
+Narrow Brown Leaf Spot       0.88      0.93      0.90        30
+            Neck_Blast       1.00      1.00      1.00        30
+
+              accuracy                           0.95       120
+             macro avg       0.95      0.95      0.95       120
+          weighted avg       0.95      0.95      0.95       120

@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  plant-disease-api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Model:/app/Model:ro
+      - ./uploads:/app/uploads
+    environment:
+      - APP_DEBUG=false
+      - DATABASE_URL=sqlite+aiosqlite:///./plant_disease.db
+    restart: unless-stopped

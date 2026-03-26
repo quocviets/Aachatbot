@@ -1,0 +1,10 @@
+                        precision    recall  f1-score   support
+
+      Apple_Apple scab       1.00      1.00      1.00        31
+       Apple_Black rot       0.97      1.00      0.98        31
+Apple_Cedar apple rust       0.91      1.00      0.95        31
+         Apple_healthy       1.00      0.87      0.93        31
+
+              accuracy                           0.97       124
+             macro avg       0.97      0.97      0.97       124
+          weighted avg       0.97      0.97      0.97       124
