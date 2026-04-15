@@ -1,47 +1,54 @@
-# Python
+# ── Python cache ──────────────────────────────────────────────────────────
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.pyd
 .Python
-env/
+*.egg-info/
+
+# ── Virtual environment ────────────────────────────────────────────────────
 venv/
 .venv/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-.git
-.mypy_cache
-.pytest_cache
-.hypothesis
+env/
 
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# Environment
+# ── Environment / secrets ──────────────────────────────────────────────────
 .env
 .env.local
 .env.production
 
-# IDE
+# ── IDE ────────────────────────────────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS
+# ── OS ─────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 
-# Temporary files
+# ── Logs / temp ────────────────────────────────────────────────────────────
+*.log
 *.tmp
 *.temp
+
+# ── Database ───────────────────────────────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+
+# ── KHÔNG cần cho runtime — không push lên GitHub ─────────────────────────
+Dataset/
+Train/
+Test/
+RAG/
+
+# ── Ảnh upload từ user ─────────────────────────────────────────────────────
+uploads/
+
+# ── Backend phức tạp (dùng main.py thay thế) ──────────────────────────────
+backend/
+
+# ── Jupyter ────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
