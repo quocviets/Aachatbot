@@ -14,14 +14,14 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 # PATH MODELS
 # ========================
 
-STAGE1_MODEL = r"C:\Users\thean\Documents\Đồ Án\Model\Stage 1\stage1_plant_classifier.pth"
+STAGE1_MODEL = r"C:\Users\lequo\Downloads\Đồ Án\Model\Stage 1\stage1_plant_classifier.pth"
 
 STAGE2_MODELS = {
-    "apple": r"C:\Users\thean\Documents\Đồ Án\Model\Apple\Apple_classifier.pth",
-    "Corn": r"C:\Users\thean\Documents\Đồ Án\Model\Corn\Corn_classifier.pth",
-    "grape": r"C:\Users\thean\Documents\Đồ Án\Model\grape\grape_classifier.pth",
-    "Rice_Leaf": r"C:\Users\thean\Documents\Đồ Án\Model\Rice_leaf\Rice_leaf_classifier.pth",
-    "tomato": r"C:\Users\thean\Documents\Đồ Án\Model\tomato\tomato_classifier.pth"
+    "apple": r"C:\Users\lequo\Downloads\Đồ Án\Model\Apple\Apple_classifier.pth",
+    "Corn": r"C:\Users\lequo\Downloads\Đồ Án\Model\Corn\Corn_classifier.pth",
+    "grape": r"C:\Users\lequo\Downloads\Đồ Án\Model\Grape\Grape_classifier.pth",
+    "Rice_Leaf": r"C:\Users\lequo\Downloads\Đồ Án\Model\Rice_leaf\Rice_leaf_classifier.pth",
+    "tomato": r"C:\Users\lequo\Downloads\Đồ Án\Model\Tomato\Tomato_classifier.pth"
 }
 
 
