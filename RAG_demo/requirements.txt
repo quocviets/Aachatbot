@@ -1,7 +1,7 @@
-fastapi
-uvicorn
-langchain
-langchain-community
-langchain-google-genai
-psycopg2-binary
-pgvector
+fastapi>=0.110,<1
+uvicorn[standard]>=0.29,<1
+langchain==0.2.17
+langchain-community==0.2.19
+langchain-google-genai==1.0.10
+psycopg2-binary>=2.9,<3
+pgvector>=0.2,<1
