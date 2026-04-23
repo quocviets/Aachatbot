@@ -30,7 +30,7 @@ def get_qa_chain():
     if not google_api_key:
         raise RuntimeError("Missing GOOGLE_API_KEY environment variable")
 
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
     vector_db = PGVector(
         connection_string=db_url,
         collection_name="nong_nghiep_data",
