@@ -2,9 +2,10 @@ import os
 
 from fastapi import FastAPI, HTTPException
 from langchain.chains import RetrievalQA
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import PGVector
 from langchain_core.prompts import PromptTemplate
-from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_google_genai import ChatGoogleGenerativeAI
 from pydantic import BaseModel
 
 
@@ -30,7 +31,9 @@ def get_qa_chain():
     if not google_api_key:
         raise RuntimeError("Missing GOOGLE_API_KEY environment variable")
 
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    )
     vector_db = PGVector(
         connection_string=db_url,
         collection_name="nong_nghiep_data",

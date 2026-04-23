@@ -5,3 +5,4 @@ langchain-community==0.2.19
 langchain-google-genai==1.0.10
 psycopg2-binary>=2.9,<3
 pgvector>=0.2,<1
+sentence-transformers>=2.7,<4
