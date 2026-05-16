@@ -84,7 +84,11 @@ STAGE2_CLASSES = {
 
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
-    transforms.ToTensor()
+    transforms.ToTensor(),
+    transforms.Normalize(
+        mean=[0.485, 0.456, 0.406],
+        std=[0.229, 0.224, 0.225]
+    )
 ])
 
 
@@ -119,15 +123,15 @@ def predict_stage1(image):
     with torch.no_grad():
 
         outputs = model(image)
-
+        print("OUTPUT SHAPE:", outputs.shape)
         probs = F.softmax(outputs, dim=1)
-
+        print("PROBS:", probs)
         pred = torch.argmax(probs).item()
-
-    plant = STAGE1_CLASSES[pred]
-
-    confidence = probs[0][pred].item()
-
+        print("PRED INDEX:", pred)
+        plant = STAGE1_CLASSES[pred]
+        print("PLANT:", plant)
+        confidence = probs[0][pred].item()
+        print("CONFIDENCE:", confidence)
     return plant, confidence
 
 
@@ -187,6 +191,6 @@ def predict(image_path):
 
 if __name__ == "__main__":
 
-    image_path = r"C:\Users\thean\Downloads\luabenh.jpg"
+    image_path = r"C:\Users\lequo\Downloads\images (2).jpg"
 
     predict(image_path)

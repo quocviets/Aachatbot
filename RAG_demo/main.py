@@ -1,72 +1,48 @@
 import os
-
-from fastapi import FastAPI, HTTPException
-from langchain.chains import RetrievalQA
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import PGVector
-from langchain_core.prompts import PromptTemplate
-from langchain_google_genai import ChatGoogleGenerativeAI
+from fastapi import FastAPI
 from pydantic import BaseModel
-
+from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
+from langchain_community.vectorstores import PGVector
+from langchain.chains import RetrievalQA
+from langchain_core.prompts import PromptTemplate
 
 app = FastAPI()
-qa_chain = None
 
+# Lấy cấu hình từ Environment Variables của Render
+DB_URL = os.getenv("DATABASE_URL")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+
+# Khởi tạo các thành phần AI
+embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+vector_db = PGVector(
+    connection_string=DB_URL,
+    collection_name="nong_nghiep_data",
+    embedding_function=embeddings
+)
+
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.1)
+
+# Cấu hình Prompt chuyên gia
+template = """Bạn là một chuyên gia tư vấn kỹ thuật nông nghiệp. 
+Hãy trả lời dựa trên ngữ cảnh: {context}
+Câu hỏi: {question}
+Trả lời chi tiết:"""
+QA_PROMPT = PromptTemplate.from_template(template)
+
+qa_chain = RetrievalQA.from_chain_type(
+    llm=llm,
+    retriever=vector_db.as_retriever(search_kwargs={"k": 3}),
+    chain_type_kwargs={"prompt": QA_PROMPT}
+)
 
 class Msg(BaseModel):
     message: str
 
-
-def get_qa_chain():
-    global qa_chain
-
-    if qa_chain is not None:
-        return qa_chain
-
-    db_url = os.getenv("DATABASE_URL")
-    google_api_key = os.getenv("GOOGLE_API_KEY")
-
-    if not db_url:
-        raise RuntimeError("Missing DATABASE_URL environment variable")
-    if not google_api_key:
-        raise RuntimeError("Missing GOOGLE_API_KEY environment variable")
-
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-    )
-    vector_db = PGVector(
-        connection_string=db_url,
-        collection_name="nong_nghiep_data",
-        embedding_function=embeddings,
-    )
-    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.1)
-
-    prompt = PromptTemplate.from_template(
-        """Ban la mot chuyen gia tu van ky thuat nong nghiep.
-Hay tra loi dua tren ngu canh: {context}
-Cau hoi: {question}
-Tra loi chi tiet:"""
-    )
-
-    qa_chain = RetrievalQA.from_chain_type(
-        llm=llm,
-        retriever=vector_db.as_retriever(search_kwargs={"k": 3}),
-        chain_type_kwargs={"prompt": prompt},
-    )
-    return qa_chain
-
+@app.post("/ask")
+async def ask(request: Msg):
+    res = qa_chain.invoke({"query": request.message})
+    return {"answer": res["result"]}
 
 @app.get("/")
 def health():
     return {"status": "online"}
-
-
-@app.post("/ask")
-async def ask(request: Msg):
-    try:
-        chain = get_qa_chain()
-        result = chain.invoke({"query": request.message})
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
-
-    return {"answer": result["result"]}

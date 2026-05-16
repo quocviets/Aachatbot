@@ -17,6 +17,10 @@ settings = get_settings()
 
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png"}
 
+PLANT_TYPE_ALIASES = {
+    "rice": "Rice_leaf",
+}
+
 # Magic bytes for JPEG and PNG — replaces imghdr (removed in Python 3.13)
 _MAGIC_BYTES: list[tuple[bytes, str]] = [
     (b"\xff\xd8\xff", "jpeg"),
@@ -73,6 +77,7 @@ async def predict(
 
     # ── 5. Validate optional plant_type ─────────────────────────────────────
     if plant_type is not None:
+        plant_type = PLANT_TYPE_ALIASES.get(plant_type.strip().lower(), plant_type)
         import sys, os
         root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         sys.path.insert(0, root)
